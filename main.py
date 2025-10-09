@@ -681,7 +681,7 @@ def great_lizard():
 def make_half_dragon():
     return Enemy("Half-Dragon", 54, "ice", "lightning", 1, lightning_breath, claw2, None, 4, None)
 def lightning_wyrmling():
-    return Enemy("Young Blue Dragon", 78, "ice", "lightning", 1, lightning_breath, claw2, None, 30, None)
+    return Enemy("Young Blue Dragon", 78, "ice", "lightning", 1, lightning_breath, claw2, None, 30, dragon_key)
 
 secret = Secret("item", anti_mold, "There is an awful growth of mold on the wall", moss_infest_sword, "weapon")
 floors.append(Floor(21, make_kobold(), None, None, secret, 3))
