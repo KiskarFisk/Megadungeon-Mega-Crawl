@@ -72,6 +72,11 @@ class Shop():
             self.spell = random.choice(t2_spell)
             self.item = random.choice(t2_item)
 
+        if self.level == 3:
+            self.weapon = random.choice(t3_weapon)
+            self.spell = random.choice(t3_spell)
+            self.item = random.choice(t3_item)
+
     def shopping(self):
         global coin
         self.weapon.info()
@@ -128,6 +133,19 @@ great_dual_spell = Spell("Greater Dual Spell", 6, 10, 10, None, 0)
 
 t2_spell = [lightning_bolt_iii, heal_spell_ii, fire_bolt_ii, freeze, dual_spell_ii]
 
+### T3
+
+lightning_bolt_iv = Spell("Lightning Bolt IV", 5, 14, 0, "lightning", 20)
+heal_spell_iii = Spell("Heal Spell III", 5, 0, 13, None, 21)
+fire_bolt_iii = Spell("Fire Bolt III", 9, 22, 0, "fire", 24)
+freeze_ii = Spell("Freeze II", 3, 11, 0, "ice", 16)
+corrupt_ii = Spell("Corrupt II", 10, 35, 0, "dark", 50)
+divine_smite = Spell("Divine Blast", 3, 11, 0, "holy", 10)
+
+ice_blast = Spell("Ice Blast", 4, 14, 0, "ice", 0)
+
+t3_spell = [lightning_bolt_iv, heal_spell_iii, fire_bolt_iii, freeze_ii, corrupt_ii, divine_smite]
+
 class Weapon:
     def __init__(self, name, damage, to_hit, damage_type, coin):
         self.name = name
@@ -168,6 +186,24 @@ bless_axe = Weapon("Glowing Axe", 13, 60, "holy", 20)
 
 lvl_2_weapon = [harpe, harpe2, harpe3, flaming_harpe, electric_harpe, spatha, dark_spatha, axe, bless_axe]
 
+## T3
+
+axe2 = Weapon("Axe +1", 15, 60, "normal", 17)
+flaming_axe = Weapon("Flaming Axe", 15, 60, "fire", 19)
+
+spatha2 = Weapon("Spatha +1", 10, 75, "normal", 15)
+spatha3 = Weapon("Spatha +2", 13, 75, "normal", 18)
+
+mace = Weapon("Mace", 17, 52, "normal", 15)
+enhanced_mace = Weapon("Enhanced Mace", 21, 65, "normal", 32)
+
+great_hammer = Weapon("Great Hammer", 20, 60, "normal", 22)
+
+spec_wep = Weapon("Sword of the Small Hero", 18, 65, "holy", 0)
+moss_infest_sword = Weapon("Moss Infested Sword", 14, 70, "normal", 0)
+
+t3_weapon = [axe2, flaming_axe, spatha2, spatha3, mace, enhanced_mace, great_hammer]
+
 class Item:
     def __init__(self, name, coin):
         self.name = name
@@ -186,8 +222,15 @@ protection = Item("A protection talisman", 12)
 
 rat_crown = Item("Rat Crown", 0)
 slime_key = Item("Slimey Key", 0)
+anti_mold = Item("Anti-Mold Spray", 10)
 
-t2_item = [protection, acid]
+t2_item = [protection, acid, anti_mold]
+
+## Tier 3
+
+dragon_key = Item("Dragon Scale Key", 0)
+
+t3_item = [protection]
 
 class Attack:
     def __init__(self, name, to_hit, damage):
@@ -211,6 +254,14 @@ strangle = Attack("Strangle", 50, 6)
 claw = Attack("Claw", 70, 4)
 smash = Attack("Smash", 60, 7)
 infest3 = Attack("Infest", 40, 11)
+
+# T3
+
+stab2 = Attack("Stab", 70, 6)
+wind_gust = Attack("Wind Gust", 50, 12)
+sword2 = Attack("Sword", 70, 9)
+lightning_breath = Attack("Lightning Breath", 60, 14)
+claw2 = Attack("Claw", 70, 8)
 
 class Enemy:
     def __init__(self, name, HP, weakness, resistant, action_count, attack1, attack2, attack3, coin, drop):
@@ -617,13 +668,52 @@ floors.append(Floor(19, make_statue(), make_statue(), None, None, 2))
 
 floors.append(Floor(20, make_great_mold(), make_statue(), None, None, 0))
 
+# Tier 3
+
+def make_kobold():
+    return Enemy("Kobold", 28, "ice", "lightning", 1, stab2, None, None, 9, None)
+def make_fly_kobold():
+    return Enemy("Flying Kobold", 33, "ice", "lightning", 1, stab2, wind_gust, None, 7, None)
+def make_lizardfolk():
+    return Enemy("Lizardfolk", 40, "ice", "lightning", 1, sword2, stab2, None, 11, None)
+def great_lizard():
+    return Enemy("Great Lizardfolk", 58, "ice", "lightning", 2, sword2, None, None, 14, None)
+def make_half_dragon():
+    return Enemy("Half-Dragon", 54, "ice", "lightning", 1, lightning_breath, claw2, None, 4, None)
+def lightning_wyrmling():
+    return Enemy("Young Blue Dragon", 78, "ice", "lightning", 1, lightning_breath, claw2, None, 30, None)
+
+secret = Secret("item", anti_mold, "There is an awful growth of mold on the wall", moss_infest_sword, "weapon")
+floors.append(Floor(21, make_kobold(), None, None, secret, 3))
+
+floors.append(Floor(22, make_kobold(), make_kobold(), None, None, 0))
+
+secret = Secret("item", chocolate, "There is one of those awful Luna things growing on the wall", protection, "item")
+floors.append(Floor(23, make_fly_kobold(), make_fly_kobold(), None, secret, 0))
+
+floors.append(Floor(24, make_lizardfolk(), make_fly_kobold(), None, None, 3))
+
+floors.append(Floor(25, make_lizardfolk(), make_lizardfolk(), None, None, 0))
+
+secret = Secret("item", slime_key, "There is a key hole here, it's slimey", ice_blast, "spell")
+floors.append(Floor(26, great_lizard(), None, None, secret, 0))
+
+floors.append(Floor(27, make_lizardfolk(), make_lizardfolk(), None , None, 0))
+
+floors.append(Floor(28, make_half_dragon(), None, None, None, 3))
+
+floors.append(Floor(29, make_half_dragon(), None, None, None, 0))
+
+secret = Secret("item", dragon_key, "There is a key hole in the wall", spec_wep, "weapon")
+floors.append(Floor(30, lightning_wyrmling(), None, None, secret, 0))
+
 player_hp = 10
 ac = 2
 player_max_hp = 10
 player_mana = 5
 player_max_mana = 5
 player_equipped_item = short_sword
-player_items = [acid]
+player_items = []
 player_actions = 1
 player_actions_max = 1
 coin = 0
@@ -862,7 +952,7 @@ def level_up():
             decision = 1
     print(f"Max HP: {player_max_hp}\nMax Mana: {player_max_mana}")
 
-print("MDMC 0.2.1")
+print("MDMC 0.3.0")
 
 floor_number = 1
 while floor_number < len(floors) and player_hp > 0:
