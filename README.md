@@ -1,1 +1,1 @@
-Contains the single file which makes up version 0.2.1 of Megadungeon Mega-Crawl
+The files for Megadungeon Mega-Crawl an open-source terminal based dungeon crawling action rpg.
