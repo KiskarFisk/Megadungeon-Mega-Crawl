@@ -2,11 +2,14 @@ import math
 import random
 import time
 
+from floor_handle import floors, Floor
+from player_function import Player, player1
+
 from colorama import Fore, Style, init
 init()
 
 floor = 1
-floors = []
+# floors = []
 
 class Secret():
     def __init__(self, condition, item, description, prize, prize_type):
@@ -53,7 +56,7 @@ class Secret():
             print(f"You got {self.prize.name}")
         if self.prize_type == "weapon":
             print(f"You got {self.prize.name}")
-            new_weapon(self.prize)
+            #new_weapon(self.prize)
         if self.prize_type == "spell":
             print(f"You got {self.prize.name}")
             new_spell(self.prize)
@@ -86,7 +89,7 @@ class Shop():
         print(f"\n1. Buy the {self.weapon.name}\n2. Buy the {self.item.name}\n3. Buy the {self.spell.name}")
         inp = input("Your choice: ")
         if inp == "1" and coin >= self.weapon.coin:
-            new_weapon(self.weapon)
+            #new_weapon(self.weapon)
             coin -= self.weapon.coin
         if inp == "2" and coin >= self.item.coin:
             player_items.append(self.item)
@@ -337,232 +340,6 @@ class Enemy:
         print(f"{self.name}")
         print(f"HP = {self.HP}")
 
-class Floor():
-    def __init__(self, number, enemy1, enemy2, enemy3, secret, shop):
-        self.number = number
-        self.enemies = []
-        self.enemies.append(enemy1)
-        if enemy2 is not None:
-            self.enemies.append(enemy2)
-
-        self.enemy1 = enemy1
-        self.enemy2 = enemy2
-
-        self.defeated = 0
-        self.secret = secret
-        self.shop = shop
-
-    def running(self):
-        global ac
-        ac = 2
-        for item in player_items:
-            if item == protection:
-                ac += 2
-        global floor_number
-        global estus_count
-        global estus_max
-        global mana_pot_count
-        global mana_pot_mox
-        global player_hp, player_actions_max
-        global player_mana, estus_max, player_max_mana
-        shop = Shop(self.shop)
-        if floor_number % 3 == 0 and floor_number > 1:
-            print(Fore.GREEN + "Estus Flasks and Mana Potions restored!" + Style.RESET_ALL)
-            estus_count = estus_max
-            mana_pot_count = mana_pot_mox
-        if floor_number % 2 == 0 and floor_number > 1:
-            level_up()
-        if floor_number % 5 == 0:
-            print("HP and Mana restored!")
-            player_hp = player_max_hp
-            player_mana = player_max_mana
-        if floor_number == 6:
-            print("You get another action")
-            player_actions_max += 1
-
-            if player_mana < player_max_mana:
-                player_mana += 1
-                print("You regained 1 mana!")
-
-        while self.defeated < 2:
-            print(f"\nYou are on floor {self.number}")
-            if self.defeated == 0:
-                print("1. Fight the level's enemy")
-            if self.secret is not None:
-                print("2. Check secret")
-            if self.shop > 0:
-                print("3. Shop")
-            if self.defeated == 1:
-                print("4. Go to the next floor")
-            print("5. View inventory")
-            print("6. View spells")
-            inp = input("Choose what to do ")
-
-            if inp == "1" and self.defeated == 0:
-                self.fight()
-            if inp == "2" and self.secret is not None:
-                self.secret.running()
-            if inp == "3" and self.shop > 0:
-                shop.shopping()
-            if inp == "4" and self.defeated == 1:
-                floor_number += 1
-                if floor_number % 5 == 0:
-                    upgrade_estus()
-                return
-            if inp == "5":
-                show_inv()
-            if inp == "6":
-                if spell1 is not None:
-                    print(f"{spell1.info()}")
-                if spell2 is not None:
-                    print(spell2.info())
-                if spell3 is not None:
-                    spell3.info()
-            if inp == "7":
-                swap_weapon()
-
-    def fight(self):
-        global player_hp
-        global coin
-        dmg_red = 0
-        while self.defeated == 0:
-            dmg_red = 0
-            if player_hp <= 0:
-                print("\nYou are defeated...")
-                quit()
-
-            player_actions = player_actions_max
-            print("Enemies:")
-            if self.enemy1 is not None:
-                self.enemy1.info()
-            if self.enemy2 is not None:
-                self.enemy2.info()
-
-            while player_actions > 0:
-                print(f"You have {player_hp} HP and {player_mana} Mana")
-                print(f"Remaining actions: {player_actions}")
-                print("1. Attack\n2. Magic\n3. Defend\n4. Items")
-                inp = input("Choose what to do ")
-                if inp == "1": # Attacking
-                    target_select = 0
-                    target = None
-                    if self.enemy1 is not None and self.enemy2 is None:
-                        target = self.enemy1
-                        target_select = 1
-                    if self.enemy1 is None and self.enemy2 is not None:
-                        target = self.enemy2
-                        target_select = 2
-                    while target_select == 0:
-                        print("Which enemy to attack (1 or 2)?")
-                        inp = input("Your decision: ")
-                        if inp == "1" and self.enemy1 is not None:
-                            target = self.enemy1
-                            target_select = 1
-                        if inp == "1" and self.enemy1 is None:
-                            print("No enemy 1")
-                        if inp == "2" and self.enemy2 is not None:
-                            target = self.enemy2
-                            target_select = 1
-                        if inp == "2" and self.enemy2 is None:
-                            print("No enemy 2")
-                    rum = random.randint(1,100)
-                    if rum <= player_equipped_item.to_hit:
-                        damage = damage_modifier(target, player_equipped_item.damage_type, player_equipped_item.damage)
-                        target.HP -= damage
-                        print(f"Attacked {target.name} for {damage} damage")
-                        time.sleep(1)
-                        player_actions -= 1
-                    else:
-                        print(f"Missed {target.name}")
-                        time.sleep(1)
-                        player_actions -= 1
-                    inp = 0
-
-                if inp == "2": #Casting a spell
-                    target_select = 0
-                    target = None
-                    if self.enemy1 is not None and self.enemy2 is None:
-                        target = self.enemy1
-                        target_select = 1
-                    if self.enemy1 is None and self.enemy2 is not None:
-                        target = self.enemy2
-                        target_select = 2
-                    while target_select == 0:
-                        print("Which enemy to attack (1 or 2)?")
-                        inp = input("Your decision: ")
-                        if inp == "1" and self.enemy1 is not None:
-                            target = self.enemy1
-                            target_select = 1
-                        if inp == "1" and self.enemy1 is None:
-                            print("No enemy 1")
-                        if inp == "2" and self.enemy2 is not None:
-                            target = self.enemy2
-                            target_select = 1
-                        if inp == "2" and self.enemy2 is None:
-                            print("No enemy 2")
-                    damage, passes, heal, type = cast_spell()
-                    if passes > 0:
-                        player_actions -= 1
-                        if damage > 0:
-                            damage = damage_modifier(target, type, damage)
-                            print(f"You deal {damage} damage to {target.name}")
-                            target.HP -= damage
-                        if heal > 0:
-                            print(f"You heal {heal} HP")
-                            player_hp += heal
-
-                if inp == "3": # defending
-                    print("You brace yourself")
-                    dmg_red = ac
-                    print(f"Your damage reduction is {dmg_red}")
-                    player_actions -= 1
-
-                if inp == "4":
-                    show_inv()
-
-            if self.enemy1 is not None:
-                if self.enemy1.HP > 0:
-                    damage = self.enemy1.fight()
-                    if damage is not None:
-                        damage -= dmg_red
-                        if damage > 0:
-                            player_hp -= damage
-                    else:
-                        print(f"{self.enemy1.name} missed")
-
-            if self.enemy2 is not None:
-                if self.enemy2.HP > 0:
-                    damage = self.enemy2.fight()
-                    if damage is not None:
-                        damage -= dmg_red
-                        if damage > 0:
-                            player_hp -= damage
-                    else:
-                        print(f"{self.enemy2.name} missed")
-
-            if self.enemy1 is not None:
-                if self.enemy1.HP <= 0:
-                    print(f"Defeated {self.enemy1.name}")
-                    print(f"Gained {self.enemy1.coin} coin")
-                    coin += self.enemy1.coin
-                    if self.enemy1.drop is not None:
-                        print(f"They also dropped {self.enemy1.drop.info()}")
-                        player_items.append(self.enemy1.drop)
-                    self.enemy1 = None
-
-            if self.enemy2 is not None:
-                if self.enemy2.HP <= 0:
-                    print(f"Defeated {self.enemy2.name}")
-                    print(f"Gained {self.enemy2.coin} coin")
-                    coin += self.enemy2.coin
-                    if self.enemy2.drop is not None:
-                        print(f"They also dropped {self.enemy2.drop.info()}")
-                        player_items.append(self.enemy2.drop)
-                    self.enemy2 = None
-
-            if self.enemy1 is None and self.enemy2 is None:
-                self.defeated = 1
-
 def upgrade_estus():
     global estus_max
     global mana_pot_mox
@@ -607,7 +384,7 @@ def make_infected_mini_luna():
 enemy1 = Enemy("Test", 50, None, None, 1, bite1, None, None, 2, None)
 
 giant_rat = Enemy("Giant Rat", 5, None, None, 1, bite1, None, None, 2, None)
-floors.append(Floor(1, giant_rat, None, None, None, 0))
+# floors.append(Floor(1, giant_rat, None, None, None, 0))
 
 secret = Secret("creative", "push", "The stones of the wall are fairly normal though ones seems to jut out more than the others", ishmar_blade, "weapon")
 giant_rat = Enemy("Giant Rat", 5, None, None, 1, bite1, None, None, 2, None)
@@ -712,48 +489,6 @@ floors.append(Floor(29, make_half_dragon(), None, None, None, 0))
 secret = Secret("item", dragon_key, "There is a key hole in the wall", spec_wep, "weapon")
 floors.append(Floor(30, lightning_wyrmling(), None, None, secret, 0))
 
-player_hp = 10
-ac = 2
-player_max_hp = 10
-player_mana = 5
-player_max_mana = 5
-player_equipped_item = short_sword
-player_items = []
-player_actions = 1
-player_actions_max = 1
-coin = 0
-
-secondary_weapon = None
-tertiary_weapon = None
-quaternary_weapon = None
-
-def new_weapon(weapon):
-    global player_equipped_item
-    global secondary_weapon
-    global tertiary_weapon
-    global quaternary_weapon
-
-    if secondary_weapon is None:
-        secondary_weapon = weapon
-    elif tertiary_weapon is None:
-        tertiary_weapon = weapon
-    elif quaternary_weapon is None:
-        quaternary_weapon = weapon
-    else:
-        player_equipped_item.info()
-        secondary_weapon.info()
-        tertiary_weapon.info()
-        quaternary_weapon.info()
-        inp = input("1-4 to replace a weapon")
-        if inp == "1":
-            player_equipped_item = weapon
-        if inp == "2":
-            secondary_weapon = weapon
-        if inp =="3":
-            tertiary_weapon = weapon
-        if inp == "4":
-            quaternary_weapon = weapon
-
 def swap_weapon():
     global player_equipped_item
     global secondary_weapon
@@ -783,9 +518,7 @@ def swap_weapon():
         player_equipped_item = tertiary_weapon
         tertiary_weapon = swap
 
-spell1 = lightning_bolt_i
-spell2 = None
-spell3 = None
+player1.spell1 = lightning_bolt_i
 
 def new_spell(spell):
     global spell1
@@ -810,50 +543,6 @@ def new_spell(spell):
         if inp == "3":
             spell3 = spell
 
-estus_count = 4
-estus_max = 4
-estus_heal = 4
-
-mana_pot_count = 1
-mana_pot_mox = 1
-mana_pot_restore = 4
-
-def cast_spell():
-    global spell1
-    global spell2
-    global spell3
-    global player_mana
-    spell_chosen = 0
-    while spell_chosen < 1:
-        if spell1 is not None:
-            spell1.info()
-        if spell2 is not None:
-            spell2.info()
-        if spell3 is not None:
-            spell3.info()
-        inp = input("Choose a spell (1-3) ")
-        if inp == "1" and spell1 is not None:
-            if spell1.cost > player_mana:
-                print("Insufficient mana")
-                return 0, 0, 0, None
-            else:
-                player_mana -= spell1.cost
-                return spell1.damage, 1, spell1.heal, spell1.damage_type # The one is to tell the fight system that it actually worked
-        if inp == "2" and spell2 is not None:
-            if spell2.cost > player_mana:
-                print("Insufficient mana")
-                return 0, 0, 0, None
-            else:
-                player_mana -= spell2.cost
-                return spell2.damage, 2, spell2.heal, spell2.damage_type
-        if inp == "3" and spell3 is not None:
-            if spell3.cost > player_mana:
-                print("Insufficient mana")
-                return 0, 0, 0, None
-            else:
-                player_mana -= spell3.cost
-                return spell3.damage, 2, spell3.heal, spell2.damage_type
-
 def choose_item():
     global player_items
 
@@ -866,76 +555,6 @@ def choose_item():
             if item.name == inp:
                 thing = item
                 return thing
-
-def show_inv():
-    global player_items
-    global estus_count
-    global mana_pot_count
-    global estus_heal
-    global mana_pot_restore
-    global coin
-
-    print()
-    for i, item in enumerate(player_items, 1):
-        print(f"{item.info()}")  # assuming item.info() returns a string
-
-    print(f"{player_hp} HP")
-    print(f"{player_mana} Mana")
-    print(f"{estus_count} Estus Flasks - Heals {estus_heal} HP")
-    print(f"{mana_pot_count} Mana Potions - Restores {mana_pot_restore} Mana")
-    print(f"You have {coin} coins")
-
-    print("\n1. Use Estus Flask\n2. Use Mana Potion\n3. Swap weapons")
-    inp = input("Choose an option: ")
-    if inp == "1" and estus_count > 0:
-        use_estus()
-    if inp == "2" and mana_pot_count > 0:
-        use_mana_pot()
-    if inp == "3":
-        swap_weapon()
-
-    time.sleep(1)
-
-def use_estus():
-    global estus_count
-    global estus_max
-    global estus_heal
-    global player_hp
-
-    estus_count -= 1
-    player_hp += estus_heal
-    if player_hp > player_max_hp:
-        player_hp = player_max_hp
-        print("Healed to max HP!")
-    else:
-        print(f"Healed {estus_heal} HP!")
-
-def use_mana_pot():
-    global mana_pot_count
-    global mana_pot_restore
-    global player_mana
-    global player_max_mana
-
-    mana_pot_count -= 1
-    player_mana += mana_pot_restore
-    if player_mana > player_max_mana:
-        player_mana = player_max_mana
-        print("Restored mana to max!")
-    else:
-        print(f"Restore {mana_pot_restore} mana!")
-
-def damage_modifier(enemy, type, damage):
-    if enemy.weakness is not None:
-        if enemy.weakness == type:
-            damage *= 2
-            damage = math.floor(damage)
-            return damage
-    if enemy.resistant is not None:
-        if enemy.resistant == type:
-            damage *= 0.5
-            damage = math.floor(damage)
-            return damage
-    return damage
 
 lvl1_weapon = [long_sword, short_sword2, short_sword3, flail, flaming_short_sword, long_sword2, frozen_short_sword]
 lvl1_item = [poison, protection]
@@ -960,6 +579,6 @@ def level_up():
 print("MDMC 0.3.2")
 
 floor_number = 1
-while floor_number < len(floors) and player_hp > 0:
+while floor_number < len(floors) and player1.hp > 0:
     floor = floors[floor_number - 1]
     floor.running()
