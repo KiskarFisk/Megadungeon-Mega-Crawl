@@ -379,6 +379,11 @@ class Floor():
         if floor_number == 6:
             print("You get another action")
             player_actions_max += 1
+
+            if player_mana < player_max_mana:
+                player_mana += 1
+                print("You regained 1 mana!")
+
         while self.defeated < 2:
             print(f"\nYou are on floor {self.number}")
             if self.defeated == 0:
@@ -952,7 +957,7 @@ def level_up():
             decision = 1
     print(f"Max HP: {player_max_hp}\nMax Mana: {player_max_mana}")
 
-print("MDMC 0.3.0")
+print("MDMC 0.3.2")
 
 floor_number = 1
 while floor_number < len(floors) and player_hp > 0:
