@@ -57,3 +57,7 @@ spec_wep = Weapon("Sword of the Small Hero", 18, 65, "holy", 0)
 moss_infest_sword = Weapon("Moss Infested Sword", 14, 70, "normal", 0)
 
 t3_weapon = [axe2, flaming_axe, spatha2, spatha3, mace, enhanced_mace, great_hammer]
+
+# T4
+
+t4spec = Weapon("Ashen Sword", 23, 70, "normal", 0)

@@ -19,5 +19,4 @@ while floor_handle.floor_number < len(floor_handle.floors) and player1.hp > 0:
     save.save()
     print("Game saved!")
     floor = floor_handle.floors[floor_handle.floor_number - 1]
-    print(floor_handle.floor_number)
     floor.running()

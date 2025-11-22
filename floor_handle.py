@@ -6,14 +6,13 @@ import time
 from colorama import Fore, Style, init
 init()
 
-import save_function as save
-
 floor_number = 1
 
 from shop_function import Shop
 
 import enemy_attack_function as attack
 import item_function as item
+from item_function import protection
 import weapon_function as weapon
 import spell_function as spell
 
@@ -95,7 +94,7 @@ class Floor():
     def running(self):
         ac = 2
         for item in player1.items:
-            if item == item.protection:
+            if item == protection:
                 ac += 2
 
         global floor_number
@@ -516,6 +515,8 @@ def make_forgotten_soldier():
     return Enemy("Forgotten Soldier", random.randint(55,65), "fire", None, 1, attack.spear, None, None, random.randint(6,8), None)
 def make_men_ash():
     return Enemy("Men of Ash", 64, "fire", None, 1, attack.sword2, attack.spear, None, 3, None)
+def make_ash_heap():
+    return Enemy("Ash Heap", 83, "fire", None, 1, attack.ash_gust, attack.wind_gust, None, 1, None)
 
 forgotten_man = Enemy("Forgotten Man", 1, None, None, 1, attack.tremble, attack.cower, attack.tremble, 0, item.diary)
 floors.append(Floor(31, forgotten_man, None, None, None, 0))
@@ -527,3 +528,18 @@ floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None
 floors.append(Floor(34, make_men_ash(), make_forgotten_soldier(), None, None, 0))
 
 breaking_man = Enemy("Breaking Man", 91, "fire", None, 1, attack.sword2, attack.spear, attack.wind_gust, 0, None)
+floors.append(Floor(35, breaking_man, make_men_ash(), None, None, 0))
+
+floors.append(Floor(36, make_ash_heap(), None, None, None, 0))
+
+floors.append(Floor(37, make_ash_heap(), make_forgotten_soldier(), None, None, 0))
+
+floors.append(Floor(38, make_ash_heap(), make_ash_heap(), None, None, 0))
+
+secret = Secret("item", item.diary, "There is a man of ash cowering on the floor. He tells you about his friend who he has been unable to visit, from several floors below.", weapon.t4spec, "weapon")
+breaking_man = Enemy("Breaking Man", 91, "fire", None, 1, attack.sword2, attack.spear, attack.wind_gust, 0, None)
+breaking_man2 = Enemy("Breaking Man", 91, "fire", None, 1, attack.sword2, attack.spear, attack.wind_gust, 0, None)
+floors.append(Floor(39, breaking_man, breaking_man2, None, None, 0))
+
+mass_of_ash = Enemy("Writhing Mass of Men in Ash", 161, "fire", None, 1, attack.ash_gust, attack.sword2, attack.stab3, 0, None)
+floors.append(Floor(40, mass_of_ash, None, None, None, 0))
