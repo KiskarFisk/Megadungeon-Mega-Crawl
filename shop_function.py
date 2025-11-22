@@ -25,19 +25,18 @@ class Shop():
             self.item = random.choice(t3_item)
 
     def shopping(self):
-        global coin
         self.weapon.info()
         print(self.item.info())
         self.spell.info()
-        print(f"You have {coin} coins")
+        print(f"You have {player1.coin} coins")
         print(f"\n1. Buy the {self.weapon.name}\n2. Buy the {self.item.name}\n3. Buy the {self.spell.name}")
         inp = input("Your choice: ")
-        if inp == "1" and coin >= self.weapon.coin:
+        if inp == "1" and player1.coin >= self.weapon.coin:
             player1.new_weapon(self.weapon)
-            coin -= self.weapon.coin
-        if inp == "2" and coin >= self.item.coin:
+            player1.coin -= self.weapon.coin
+        if inp == "2" and player1.coin >= self.item.coin:
             player1.items.append(self.item)
-            coin -= self.item.coin
-        if inp == "3" and coin >= self.spell.coin:
+            player1.coin -= self.item.coin
+        if inp == "3" and player1.coin >= self.spell.coin:
             player1.new_spell(self.spell)
-            coin -= self.spell.coin
+            player1.coin -= self.spell.coin
