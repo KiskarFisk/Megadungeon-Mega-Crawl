@@ -512,10 +512,16 @@ floors.append(Floor(30, lightning_wyrmling(), None, None, secret, 0))
 
 def make_forgotten_soldier():
     return Enemy("Forgotten Soldier", random.randint(55,65), "fire", None, 1, attack.spear, None, None, random.randint(6,8), None)
+def make_men_ash():
+    return Enemy("Men of Ash", 64, "fire", None, 1, attack.sword2, attack.spear, None, 3, None)
 
-forgotten_man = Enemy("Forgotten Man", 1, None, None, 1, attack.tremble, attack.cower, attack.tremble, 0, None)
-#floors.append(Floor(31, forgotten_man, None, None, None, 0))
+forgotten_man = Enemy("Forgotten Man", 1, None, None, 1, attack.tremble, attack.cower, attack.tremble, 0, item.diary)
+floors.append(Floor(31, forgotten_man, None, None, None, 0))
 
-#floors.append(Floor(32, make_forgotten_soldier(), None, None, None, 0))
+floors.append(Floor(32, make_forgotten_soldier(), None, None, None, 0))
 
-#floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None, None, 0))
+floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None, None, 0))
+
+floors.append(Floor(34, make_men_ash(), make_forgotten_soldier(), None, None, 0))
+
+breaking_man = Enemy("Breaking Man", 91, "fire", None, 1, attack.sword2, attack.spear, attack.wind_gust, 0, None)

@@ -153,7 +153,7 @@ class Player():
         inp = input("Swap to: ")
         if inp == "2" and self.secondary_weapon is not None:
             swap = self.equipped_item
-            player_equipped_item = self.secondary_weapon
+            self.equipped_item = self.secondary_weapon
             self.secondary_weapon = swap
         if inp == "3" and self.tertiary_weapon is not None:
             swap = self.equipped_item

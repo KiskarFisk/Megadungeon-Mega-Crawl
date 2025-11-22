@@ -27,3 +27,7 @@ dragon_key = Item("Dragon Scale Key", 0)
 t3_item = [protection]
 
 lvl1_item = [poison, protection]
+
+# Tier 4
+
+diary = Item("Diary", 0)
