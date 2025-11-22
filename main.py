@@ -13,7 +13,7 @@ if os.path.exists("save.pkl"):
     else:
         print("Not loading save, good luck!")
 
-print("MDMC 0.3.4")
+print("MDMC 0.3.5")
 
 while floor_handle.floor_number < len(floor_handle.floors) and player1.hp > 0:
     save.save()
