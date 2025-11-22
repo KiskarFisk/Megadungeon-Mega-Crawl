@@ -1,6 +1,10 @@
 import random
 from player_function import Player, player1
 
+from weapon_function import lvl1_weapon, lvl_2_weapon, t3_weapon
+from item_function import lvl1_item, t2_item, t3_item
+from spell_function import lvl1_spell, t2_spell, t3_spell
+
 class Shop():
     def __init__(self, level):
         self.level = level
