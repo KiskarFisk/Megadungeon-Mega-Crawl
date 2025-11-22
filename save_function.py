@@ -57,5 +57,3 @@ def load():
         player1.tertiary_weapon,
         player1.quaternary_weapon
          ) = pkl.load(f)
-
-        print(floor_handle.floor_number)
