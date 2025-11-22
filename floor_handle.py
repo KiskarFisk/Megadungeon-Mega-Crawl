@@ -8,6 +8,8 @@ init()
 
 floor_number = 1
 
+from shop_function import Shop
+
 class Floor():
     def __init__(self, number, enemy1, enemy2, enemy3, secret, shop):
         self.number = number
@@ -38,7 +40,7 @@ class Floor():
         global player_hp, player_actions_max
         global player_mana, estus_max, player_max_mana
 
-        #shop = Shop(self.shop)
+        shop = Shop(self.shop)
         if floor_number % 3 == 0 and floor_number > 1:
             print(Fore.GREEN + "Estus Flasks and Mana Potions restored!" + Style.RESET_ALL)
             estus_count = estus_max
@@ -75,8 +77,8 @@ class Floor():
                 self.fight()
             if inp == "2" and self.secret is not None:
                 self.secret.running()
-            #if inp == "3" and self.shop > 0:
-                #shop.shopping()
+            if inp == "3" and self.shop > 0:
+                shop.shopping()
             if inp == "4" and self.defeated == 1:
                 floor_number += 1
                 if floor_number % 5 == 0:
