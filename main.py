@@ -1,4 +1,4 @@
-from floor_handle import floors, floor_number
+import floor_handle
 from player_function import Player, player1
 import save_function as save
 import os
@@ -15,9 +15,9 @@ if os.path.exists("save.pkl"):
 
 print("MDMC 0.3.4")
 
-while floor_number < len(floors) and player1.hp > 0:
+while floor_handle.floor_number < len(floor_handle.floors) and player1.hp > 0:
     save.save()
     print("Game saved!")
-    floor = floors[floor_number - 1]
+    floor = floor_handle.floors[floor_handle.floor_number - 1]
+    print(floor_handle.floor_number)
     floor.running()
-    floor_number += 1

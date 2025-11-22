@@ -6,6 +6,8 @@ import time
 from colorama import Fore, Style, init
 init()
 
+import save_function as save
+
 floor_number = 1
 
 from shop_function import Shop
@@ -91,7 +93,6 @@ class Floor():
         self.shop = shop
 
     def running(self):
-        global ac
         ac = 2
         for item in player1.items:
             if item == item.protection:
@@ -164,6 +165,7 @@ class Floor():
 
     def fight(self):
         dmg_red = 0
+        global ac
         while self.defeated == 0:
             dmg_red = 0
             if player1.hp <= 0:

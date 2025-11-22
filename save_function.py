@@ -1,12 +1,12 @@
 import pickle as pkl
 
 from player_function import player1
-from floor_handle import floor_number
+import floor_handle
 
 def save():
     with open("save.pkl", "wb") as f:
         pkl.dump((
-            floor_number,
+            floor_handle.floor_number,
             player1.hp,
             player1.max_hp,
             player1.mana,
@@ -34,7 +34,7 @@ def save():
 
 def load():
     with open("save.pkl", "rb") as f:
-        (floor_number,
+        (floor_handle.floor_number,
         player1.hp,
         player1.max_hp,
         player1.mana,
@@ -58,4 +58,4 @@ def load():
         player1.quaternary_weapon
          ) = pkl.load(f)
 
-        print(floor_number)
+        print(floor_handle.floor_number)
