@@ -506,3 +506,15 @@ floors.append(Floor(29, make_half_dragon(), None, None, None, 0))
 
 secret = Secret("item", item.dragon_key, "There is a key hole in the wall", weapon.spec_wep, "weapon")
 floors.append(Floor(30, lightning_wyrmling(), None, None, secret, 0))
+
+# 31 - 40
+
+def make_forgotten_soldier():
+    return Enemy("Forgotten Soldier", random.randint(55,65), "fire", None, 1, attack.spear, None, None, random.randint(6,8), None)
+
+forgotten_man = Enemy("Forgotten Man", 1, None, None, 1, attack.tremble, attack.cower, attack.tremble, 0, None)
+floors.append(Floor(31, forgotten_man, None, None, None, 0))
+
+floors.append(Floor(32, make_forgotten_soldier(), None, None, None, 0))
+
+floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None, None, 0))

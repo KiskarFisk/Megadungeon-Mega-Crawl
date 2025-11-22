@@ -1,3 +1,6 @@
+import random
+
+
 class Attack:
     def __init__(self, name, to_hit, damage):
         self.name = name
@@ -28,3 +31,9 @@ wind_gust = Attack("Wind Gust", 50, 12)
 sword2 = Attack("Sword", 70, 9)
 lightning_breath = Attack("Lightning Breath", 60, 14)
 claw2 = Attack("Claw", 70, 8)
+
+# Tier 4
+
+tremble = Attack("Tremble", 100, 0)
+cower = Attack("Cower", 100, 0)
+spear = Attack("Spear", 65, random.randint(9,13))
