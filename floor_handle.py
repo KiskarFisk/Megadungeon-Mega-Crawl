@@ -146,6 +146,8 @@ class Floor():
                 shop.shopping()
             if inp == "4" and self.defeated == 1:
                 floor_number += 1
+                print(floor_number)
+                time.sleep(1)
                 if floor_number % 5 == 0:
                     player1.upgrade_estus() #add that
                 return
@@ -513,8 +515,8 @@ def make_forgotten_soldier():
     return Enemy("Forgotten Soldier", random.randint(55,65), "fire", None, 1, attack.spear, None, None, random.randint(6,8), None)
 
 forgotten_man = Enemy("Forgotten Man", 1, None, None, 1, attack.tremble, attack.cower, attack.tremble, 0, None)
-floors.append(Floor(31, forgotten_man, None, None, None, 0))
+#floors.append(Floor(31, forgotten_man, None, None, None, 0))
 
-floors.append(Floor(32, make_forgotten_soldier(), None, None, None, 0))
+#floors.append(Floor(32, make_forgotten_soldier(), None, None, None, 0))
 
-floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None, None, 0))
+#floors.append(Floor(33, make_forgotten_soldier(), make_forgotten_soldier(), None, None, 0))
