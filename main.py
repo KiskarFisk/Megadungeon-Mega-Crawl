@@ -16,8 +16,6 @@ if os.path.exists("save.pkl"):
 print("MDMC 0.3.4")
 
 while floor_number < len(floors) and player1.hp > 0:
-    print(floor_number)
-    print("careful")
     save.save()
     print("Game saved!")
     floor = floors[floor_number - 1]

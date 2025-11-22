@@ -146,7 +146,6 @@ class Floor():
                 shop.shopping()
             if inp == "4" and self.defeated == 1:
                 floor_number += 1
-                print(floor_number)
                 time.sleep(1)
                 if floor_number % 5 == 0:
                     player1.upgrade_estus() #add that
